@@ -138,13 +138,17 @@ int dmr_pi_parse(const uint8_t *p, size_t len, dmr_pi_t *o) {
     return o->valid;
 }
 void dmr_pi_build(uint8_t alg_id, uint8_t key_id, uint32_t mi, uint8_t *o) {
-    o[0]=alg_id; o[1]=DMR_MFID_DMRA; o[2]=key_id;
+    o[0]=alg_id; o[1]=DMR_MFID_DMRA;
+    o[2]=(key_id >= 1 && key_id <= 15)
+        ? (uint8_t)(0xF0u | key_id) : key_id;
     o[3]=(uint8_t)(mi>>24); o[4]=(uint8_t)(mi>>16);
     o[5]=(uint8_t)(mi>>8);  o[6]=(uint8_t)(mi>>0);
 }
 
 /* ===== stream lifecycle ================================================= */
 static int ctx_load_key(dmr_aes_ctx_t *c, uint8_t key_id) {
+    if ((key_id & 0xF0u) == 0xF0u)
+        key_id &= 0x0Fu;
     if (key_id < DMR_AES_MAX_KEYS && s_have[key_id]) {
         memcpy(c->key, s_keys[key_id], DMR_AES_KEY_BYTES); c->have_key=1; c->key_id=key_id; return 0;
     }
