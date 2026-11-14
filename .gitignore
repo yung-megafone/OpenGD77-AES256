@@ -19,3 +19,4 @@ private/
 *.key
 *.codeplug.bin
 MDUV380_firmware/application/source/crypto/dmr_aes.c.bak
+MDUV380_firmware/application/source/dmr_codec/codec_interface.c.bak
