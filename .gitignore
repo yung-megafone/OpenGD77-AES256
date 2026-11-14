@@ -18,3 +18,4 @@ private/
 *.fleet.json
 *.key
 *.codeplug.bin
+MDUV380_firmware/application/source/crypto/dmr_aes.c.bak
