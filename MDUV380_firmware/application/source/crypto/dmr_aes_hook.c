@@ -843,6 +843,8 @@ void dmrAesTxEnd(void)
 int dmrAesTxEmbSb(uint8_t out4[4])
 {
     if (!s_txActive) { return 0; }
-    dmr_emb_sb_build(s_tx.key_id, (uint8_t)(s_tx.alg_id & 0x07), out4);
+    uint8_t wireKeyId = (s_tx.key_id >= 1 && s_tx.key_id <= 15)
+        ? (uint8_t)(0xF0u | s_tx.key_id) : s_tx.key_id;
+    dmr_emb_sb_build(wireKeyId, (uint8_t)(s_tx.alg_id & 0x07), out4);
     return 1;
 }
